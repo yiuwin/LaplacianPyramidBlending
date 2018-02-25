@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Oct 07 14:59:50 2016
-
-@author: zhouc
-"""
 import numpy as np
 import cv2
 import time
@@ -31,8 +25,6 @@ def createPyramid(img, pyramidN):
 
     return imagePyramid, gaussianPyramid, laplacePyramid
 
-
-# config & input
 start = time.time()
 
 Topic = 'apple'
@@ -66,10 +58,7 @@ pyramidN = math.ceil(math.log(min(rows, cols) / 16, 2))
 
 
 """
-TODO 2
 Combine the laplacian pyramids of background and foreground
-
-add your code here
 """
 
 laplaceMerge = list()
@@ -79,25 +68,17 @@ for mergeLevel in range(len(gaussianMask)):
     b = (1-gaussianMask[mergeLevel])*laplaceBack[mergeLevel]
     laplaceMerge.append(a + b)
 
-# Combine the smallest scale image
 
 """
-TODO 3
 Combine the smallest scale images of background and foreground
-
-add your code here
 """
 
 smallestScale = ( imageFore[-2]*gaussianMask[-1] ) + ( imageBack[-2]*(1-gaussianMask[-1]) )
 
-# reconstruct & output
 
 """
-TODO 4
-reconstruct the blending image by adding the gradient (in different scale) back to
+Reconstruct the blending image by adding the gradient (in different scale) back to
 the smallest scale image while upsampling
-
-add your code here
 """
 
 for reconstruct in xrange(len(laplaceMerge)-2,-1,-1):
@@ -105,8 +86,6 @@ for reconstruct in xrange(len(laplaceMerge)-2,-1,-1):
     img = smallestScale + laplaceMerge[reconstruct]
     smallestScale = img
 
-#cv2.imshow("back", backImg)
-#cv2.imshow("fore",foreImg)
 cv2.imshow('output', img);
 #print (time.time() - start)
 cv2.waitKey(0)
